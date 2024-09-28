@@ -1,0 +1,24 @@
+version: "3.12"
+
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile-fe
+    image: "${HARBOR_URL}/${HARBOR_USERNAME}/${IMAGE_FE}:${GITHUB_SHA}"
+    ports:
+      - "3000:3000"
+    # networks:
+    #   - server
+  # nginx:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-nginx
+  #   image: "${HARBOR_URL}/${HARBOR_USERNAME}/${IMAGE_NGINX}:${GITHUB_SHA}"
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - server
+# networks:
+#   server:
+#     driver: bridge

@@ -3,14 +3,11 @@ import {
   RoomAudioRenderer,
   StartAudio,
 } from "@livekit/components-react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useCallback, useState } from "react";
-
 import { PlaygroundConnect } from "@/components/PlaygroundConnect";
 import Playground from "@/components/playground/Playground";
-import { PlaygroundToast, ToastType } from "@/components/toast/PlaygroundToast";
 import { ConfigProvider, useConfig } from "@/hooks/useConfig";
 import { ConnectionMode, ConnectionProvider, useConnection } from "@/hooks/useConnection";
 import { useMemo } from "react";
@@ -78,25 +75,14 @@ export function HomeInner() {
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta
           property="og:image"
-          content="https://livekit.io/images/og/agents-playground.png"
+          content="https://cbtcdn.cybertech.com.vn/cbtcdn/logo-text.png"
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="https://i.ibb.co/VgkKtFK/logo-64.png" />
       </Head>
-      <main className="relative flex flex-col justify-center px-4 items-center h-full w-full bg-black repeating-square-background">
-        <AnimatePresence>
-          {toastMessage && (
-            <motion.div
-              className="left-0 right-0 top-0 absolute z-10"
-              initial={{ opacity: 0, translateY: -50 }}
-              animate={{ opacity: 1, translateY: 0 }}
-              exit={{ opacity: 0, translateY: -50 }}
-            >
-              <PlaygroundToast />
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <main className="max-w-screen-sm mx-auto relative flex flex-col justify-center px-4 items-center h-full w-full bg-black repeating-square-background">
+     
         {showPG ? (
           <LiveKitRoom
             className="flex flex-col h-full w-full"
