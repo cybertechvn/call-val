@@ -14,7 +14,7 @@ env:
   PERSONAL_TOTO_CDN: 'https://azureapis.blob.core.windows.net/cybertech/'
   COMMON_TOTO_CDN: 'https://azureapis.blob.core.windows.net/common/'
   PUBLIC_CDN: 'https://azureapis.blob.core.windows.net/public/'
-  DOT_ENV_FILE_NAME: .env.messenger
+  DOT_ENV_FILE_NAME: .env.call-val
   PORT: 4006
 jobs:
   variables:
