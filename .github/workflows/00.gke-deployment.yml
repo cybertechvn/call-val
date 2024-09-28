@@ -40,12 +40,6 @@ on:
         required: true
       SERVER_USER:
         required: true
-      LIVEKIT_API_KEY:
-        required: true
-      LIVEKIT_API_SECRET:
-        required: true
-      NEXT_PUBLIC_LIVEKIT_URL:
-        required: true
 
 env:
   IMAGE_FE: ${{ inputs.IMAGE_FE }}
