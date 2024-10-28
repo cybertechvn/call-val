@@ -41,17 +41,14 @@ export default function Home() {
 export function HomeInner() {
   const { shouldConnect, wsUrl, token, mode, connect, disconnect } =
     useConnection();
-  
   const {config} = useConfig();
   const { toastMessage, setToastMessage } = useToast();
-
   const handleConnect = useCallback(
     async (c: boolean, mode: ConnectionMode) => {
       c ? connect(mode) : disconnect();
     },
     [connect, disconnect]
   );
-
   const showPG = useMemo(() => {
     if (process.env.NEXT_PUBLIC_LIVEKIT_URL) {
       return true;
@@ -61,7 +58,6 @@ export function HomeInner() {
     }
     return false;
   }, [wsUrl])
-
   return (
     <>
       <Head>
@@ -81,7 +77,8 @@ export function HomeInner() {
         <meta property="og:image:height" content="630" />
         <link rel="icon" href="https://i.ibb.co/VgkKtFK/logo-64.png" />
       </Head>
-      <main className="max-w-screen-sm mx-auto relative flex flex-col justify-center px-4 items-center h-full w-full bg-black repeating-square-background">
+      <main className="relative flex flex-col justify-center px-4 items-center h-full w-full bg-black repeating-square-background">
+      {/* <main className="max-w-screen-sm mx-auto relative flex flex-col justify-center px-4 items-center h-full w-full bg-black repeating-square-background"> */}
      
         {showPG ? (
           <LiveKitRoom
