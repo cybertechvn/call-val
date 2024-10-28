@@ -1,0 +1,54 @@
+name: 02.call-val
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmDeployment:
+        description: 'Confirm Deployment'
+        default: 'OK'
+        required: true
+env:
+  IMAGE_FE: cybertech_call_val
+  IMAGE_NGINX: cybertech_call_val_nginx
+  INGRESS_IP: 34.67.90.123
+  PERSONAL_TOTO_CDN: 'https://azureapis.blob.core.windows.net/cybertech/'
+  COMMON_TOTO_CDN: 'https://azureapis.blob.core.windows.net/common/'
+  PUBLIC_CDN: 'https://azureapis.blob.core.windows.net/public/'
+  DOT_ENV_FILE_NAME: .env.call-val
+  PORT: 4006
+jobs:
+  variables:
+    name: setup variable
+    runs-on: ubuntu-latest
+    outputs:
+      IMAGE_FE: ${{ env.IMAGE_FE }}
+      IMAGE_NGINX: ${{ env.IMAGE_NGINX }}
+      INGRESS_IP: ${{ env.INGRESS_IP }}
+      PERSONAL_TOTO_CDN: ${{ env.PERSONAL_TOTO_CDN }}
+      COMMON_TOTO_CDN: ${{ env.COMMON_TOTO_CDN }}
+      PUBLIC_CDN: ${{ env.PUBLIC_CDN }}
+      DOT_ENV_FILE_NAME: ${{ env.DOT_ENV_FILE_NAME }}
+      PORT: ${{ env.PORT }}
+    steps:
+      - name: Echo
+        run: echo prepare variable
+  cybertech:
+    needs: variables
+    name: deploy cybertech
+    uses: ./.github/workflows/00.gke-deployment-build-img.yml
+    with:
+      IMAGE_FE: ${{ needs.variables.outputs.IMAGE_FE }}
+      IMAGE_NGINX: ${{ needs.variables.outputs.IMAGE_NGINX }}
+      INGRESS_IP: ${{ needs.variables.outputs.INGRESS_IP }}
+      PERSONAL_TOTO_CDN: ${{ needs.variables.outputs.PERSONAL_TOTO_CDN }}
+      COMMON_TOTO_CDN: ${{ needs.variables.outputs.COMMON_TOTO_CDN }}
+      PUBLIC_CDN: ${{ needs.variables.outputs.PUBLIC_CDN }}
+      DOT_ENV_FILE_NAME: ${{ needs.variables.outputs.DOT_ENV_FILE_NAME }}
+      PORT: ${{ needs.variables.outputs.PORT }}
+    secrets:
+      HARBOR_URL: ${{ secrets.HARBOR_URL }}
+      HARBOR_USERNAME: cybertech
+      HARBOR_PASSWORD: ${{ secrets.PASSWORD_DOCKER_HUB }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SERVER_IP: ${{ secrets.SERVER_IP }}
+      SERVER_USER: ${{ secrets.SERVER_USER }}
