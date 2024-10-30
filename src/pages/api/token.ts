@@ -8,9 +8,14 @@ import { TokenResult } from "../../lib/types";
 const apiKey = process.env.LIVEKIT_API_KEY;
 const apiSecret = process.env.LIVEKIT_API_SECRET;
 
-const createToken = (userInfo: AccessTokenOptions, grant: VideoGrant) => {
+const createToken = (
+  userInfo: AccessTokenOptions,
+  grant: VideoGrant,
+  lang: string
+) => {
   const at = new AccessToken(apiKey, apiSecret, userInfo);
   at.addGrant(grant);
+  at.attributes = { lang };
   return at.toJwt();
 };
 
@@ -24,9 +29,12 @@ export default async function handleToken(
       res.status(500).end();
       return;
     }
+    const lang = (req.query.lang as string) ?? "vi";
 
-    const roomName = `room-${generateRandomAlphanumeric(4)}-${generateRandomAlphanumeric(4)}`;
-    const identity = `identity-${generateRandomAlphanumeric(4)}`
+    const roomName = `room-${generateRandomAlphanumeric(
+      4
+    )}-${generateRandomAlphanumeric(4)}`;
+    const identity = `identity-${generateRandomAlphanumeric(4)}`;
 
     const grant: VideoGrant = {
       room: roomName,
@@ -36,7 +44,14 @@ export default async function handleToken(
       canSubscribe: true,
     };
 
-    const token = await createToken({ identity }, grant);
+    const token = await createToken(
+      {
+        identity,
+      },
+      grant,
+      lang
+    );
+
     const result: TokenResult = {
       identity,
       accessToken: token,

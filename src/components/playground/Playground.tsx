@@ -37,7 +37,7 @@ export interface PlaygroundMeta {
 export interface PlaygroundProps {
   logo?: ReactNode;
   themeColors: string[];
-  onConnect: (connect: boolean, opts?: { token: string; url: string }) => void;
+  onConnect: (connect: boolean, lang?: string) => void;
 }
 
 const headerHeight = 56;
@@ -51,6 +51,7 @@ export default function Playground({
   const { name } = useRoomInfo();
   const [transcripts, setTranscripts] = useState<ChatMessageType[]>([]);
   const { localParticipant } = useLocalParticipant();
+  const [language, setLanguage] = useState<string>('vi');
 
   const voiceAssistant = useVoiceAssistant();
 
@@ -210,6 +211,17 @@ export default function Playground({
   const settingsTileContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4 h-full w-full items-start overflow-y-auto">
+        <ConfigurationPanelItem title="Languages">
+          <input
+            type="text"
+            className="w-full p-2"
+            maxLength={2}
+            placeholder="Languages"
+            onChange={(e) => {
+              setLanguage(e?.target?.value)
+            }}/>
+        </ConfigurationPanelItem>
+        
         {config.description && (
           <ConfigurationPanelItem title="Description">
             {config.description}
@@ -380,7 +392,8 @@ export default function Playground({
         accentColor={config.settings.theme_color}
         connectionState={roomState}
         onConnectClicked={() =>
-          onConnect(roomState === ConnectionState.Disconnected)
+          onConnect(roomState === ConnectionState.Disconnected, language,
+        )
         }
       />
       <div

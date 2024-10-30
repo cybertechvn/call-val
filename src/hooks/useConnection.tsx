@@ -14,7 +14,7 @@ type TokenGeneratorData = {
   token: string;
   mode: ConnectionMode;
   disconnect: () => Promise<void>;
-  connect: (mode: ConnectionMode) => Promise<void>;
+  connect: (mode: ConnectionMode, lang: string) => Promise<void>;
 };
 
 const ConnectionContext = createContext<TokenGeneratorData | undefined>(undefined);
@@ -35,7 +35,7 @@ export const ConnectionProvider = ({
   }>({ wsUrl: "", token: "", shouldConnect: false, mode: "manual" });
 
   const connect = useCallback(
-    async (mode: ConnectionMode) => {
+    async (mode: ConnectionMode, lang: string) => {
       let token = "";
       let url = "";
       if (mode === "cloud") {
@@ -54,9 +54,7 @@ export const ConnectionProvider = ({
           throw new Error("NEXT_PUBLIC_LIVEKIT_URL is not set");
         }
         url = process.env.NEXT_PUBLIC_LIVEKIT_URL;
-        const { accessToken } = await fetch("/api/token").then((res) =>
-          res.json()
-        );
+        const { accessToken } = await fetch(`/api/token?lang=${lang}`).then((res) => res.json());
         token = accessToken;
       } else {
         token = config.settings.token;
